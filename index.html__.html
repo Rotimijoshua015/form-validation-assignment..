@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Validation Assignment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Registration Form</h2>
+  <form id="registrationForm">
+    <label>Name: <input type="text" id="name" required></label><br>
+    <label>Email: <input type="email" id="email" required></label><br>
+    <label>Password: <input type="password" id="password" required></label><br>
+    <label>Confirm Password: <input type="password" id="confirmPassword" required></label><br>
+    <label>Age: <input type="number" id="age" required></label><br>
+    <label>Gender:
+      <input type="radio" name="gender" value="Male" required> Male
+      <input type="radio" name="gender" value="Female"> Female
+    </label><br>
+    <label>Country:
+      <select id="country" required>
+        <option value="">Select</option>
+        <option value="Nigeria">Nigeria</option>
+        <option value="Ghana">Ghana</option>
+        <option value="Kenya">Kenya</option>
+      </select>
+    </label><br>
+    <label>
+      <input type="checkbox" id="terms" required> I accept the terms and conditions
+    </label><br>
+    <button type="submit">Register</button>
+    <p id="registrationError" class="error"></p>
+  </form>
+
+  <h2>Login Form</h2>
+  <form id="loginForm">
+    <label>Email: <input type="email" id="loginEmail" required></label><br>
+    <label>Password: <input type="password" id="loginPassword" required></label><br>
+    <button type="submit">Login</button>
+    <p id="loginError" class="error"></p>
+  </form>
+
+  <script>
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let error = '';
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const age = parseInt(document.getElementById('age').value);
+      const gender = document.querySelector('input[name="gender"]:checked');
+      const country = document.getElementById('country').value;
+      const terms = document.getElementById('terms').checked;
+
+      if (!name || !email || !password || !confirmPassword || !age || !gender || !country) {
+        error = 'All fields are required.';
+      } else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        error = 'Invalid email format.';
+      } else if (password.length < 8) {
+        error = 'Password must be at least 8 characters.';
+      } else if (password !== confirmPassword) {
+        error = 'Passwords do not match.';
+      } else if (isNaN(age) || age < 18 || age > 100) {
+        error = 'Age must be between 18 and 100.';
+      } else if (!terms) {
+        error = 'You must accept the terms and conditions.';
+      }
+
+      document.getElementById('registrationError').textContent = error;
+      if (!error) alert('Registration successful!');
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let loginError = '';
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      if (!email || !password) {
+        loginError = 'Both fields are required.';
+      } else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        loginError = 'Invalid email format.';
+      }
+
+      document.getElementById('loginError').textContent = loginError;
+      if (!loginError) alert('Login successful!');
+    });
+  </script>
+</body>
+</html>
